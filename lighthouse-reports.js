@@ -7,7 +7,7 @@ const lighthouse = require('lighthouse')
 const chromeLauncher = require('chrome-launcher')
 const fs = require('fs')
 const mode = process.env.NODE_ENV
-const chromeFlags = '--headless'
+const outputFormat = 'json';
 const outputDirectory = './reports'
 const ReportGenerator = require('lighthouse/report/generator/report-generator')
 
@@ -33,14 +33,11 @@ async function asyncForEach (array, callback) {
 function launchChromeAndRunLighthouse (page) {
 
   return new Promise((resolve, reject) => {
-    const options = {
-      chromeFlags
-    }
 
-    chromeLauncher.launch({ chromeFlags: options.chromeFlags }).then(chrome => {
-      options.port = chrome.port
+    chromeLauncher.launch({chromeFlags: ['--headless']}).then(chrome => {
+      const options = {output: outputFormat, onlyCategories: ['performance'], port: chrome.port};
 
-      lighthouse(page, options, )
+      lighthouse(page, options)
         .then(results => {
           chrome.kill().then(resolve(results.lhr))
         })
@@ -52,24 +49,33 @@ function launchChromeAndRunLighthouse (page) {
   })
 }
 
+function convertUrl(page) {
+
+    newName = page.replace('http://', '');
+    newName = newName.replace('https://', '');
+    newName = newName.replace(/\//g, '-');
+    return newName;
+}
+
 function writeResults (page, results) {
   if (!fs.existsSync(outputDirectory)) {
     fs.mkdirSync(outputDirectory)
   }
 
-  const htmlReport = ReportGenerator.generateReport(results, 'html')
-  const resultsPath = getReportFilePath(outputDirectory, page.name)
+  const fileName = convertUrl(page)
+  const htmlReport = ReportGenerator.generateReport(results, outputFormat)
+  const resultsPath = getReportFilePath(outputDirectory, fileName)
   return fs.writeFile(resultsPath, htmlReport, function (err) {
     if (err) {
       return console.log(err)
     }
-    console.log(`The report for "${page.name}" was saved at ${resultsPath}`)
+    console.log(`The report for "${fileName}" was saved at ${resultsPath}`)
   })
 }
 
-function getReportFilePath (outputDirectory, pageName) {
+function getReportFilePath (outputDirectory, fileName) {
   const now = new Date()
-  return `${outputDirectory}/${pageName}-${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}-${now.getMilliseconds()}.html`
+  return `${outputDirectory}/${fileName}-${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}-${now.getMilliseconds()}.${outputFormat}`
 }
 
 
