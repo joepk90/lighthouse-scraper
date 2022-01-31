@@ -1,7 +1,5 @@
-// yarn add --dev lighthouse cross-env
-// in package.json: 
-// scripts: { "lighthouse-dev": "cross-env NODE_ENV=development node ./lighthouse.js",
-//  "lighthouse-prod": "cross-env NODE_ENV=production CHROME_FLAGS=--headless node ./lighthouse.js" }
+// based off the following snippet:
+// https://gist.github.com/mort3za/e959d806a8635a914bcc76c2895014ef
 
 const lighthouse = require('lighthouse')
 const chromeLauncher = require('chrome-launcher')
