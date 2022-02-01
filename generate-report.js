@@ -109,7 +109,7 @@ const saveCSV = (csv) => {
 
     console.log(csv);
 
-    fs.writeFile('reports.csv', csv, function(err) {
+    fs.writeFile('csv-reports/report.csv', csv, function(err) {
     if (err) throw err;
     console.log('file saved');
   });
