@@ -16,7 +16,7 @@ const scraper = async (sitemapUrls) => {
 }
 
 
-(async () => {
+const generateLighthouseReports = async () => {
 
     const scrapedUrls = await scraper(["https://www.wildflowerbelt.com/sitemap.xml"])
 
@@ -24,5 +24,7 @@ const scraper = async (sitemapUrls) => {
 
     lighthouseReportGenerator(urls)
 
-})()
+};
+
+exports.generateLighthouseReports = generateLighthouseReports;
 
