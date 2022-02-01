@@ -2,18 +2,19 @@ const fs = require('fs');
 const path = require('path')
 const { parse } = require('json2csv');
 
-const jsonFiles = fs.readdirSync('./reports').filter(file => path.extname(file) === '.json');
-
 const getData = async (files) => {
     
-    let data = {};
+    let dataArray = [];
     files.forEach(file => {
+        let data = {};
         const fileData = fs.readFileSync(path.join('./reports', file));
         const json = JSON.parse(fileData.toString());
-        data[file] = json;        
+        data[file] = json;
+
+        dataArray.push(data)        
     });
 
-    return data;
+    return dataArray;
 
 }
 
@@ -150,10 +151,18 @@ const generateCSV = (structuredData) => {
 
 const generateReport = async () => {
 
-    const files = await getData([jsonFiles[0]]);
-    const resourceItems = extractResourceSummaries(files);
-    const structuredData = restructureData(resourceItems)
-    const CSVData = generateCSV(structuredData);
+    const jsonFiles = await fs.readdirSync('./reports').filter(file => path.extname(file) === '.json');
+    const files = await getData(jsonFiles);
+
+
+    const struturedDataArray = []
+    files.forEach(file => {
+        const resourceItems = extractResourceSummaries(file);
+        const structuredData = restructureData(resourceItems);
+        struturedDataArray.push(structuredData);
+    })
+    
+    const CSVData = generateCSV(struturedDataArray);
     saveCSV(CSVData);
 
 };
