@@ -5,9 +5,11 @@ const { generateLighthouseReports } = require('./lighthouse-scraper.js');
 const siteMapUrl = process.env.npm_config_url;
 
 // TODO fix async logic. generateReport finished before generateLighthouseReports
+// for now, first run generateLighthouseReports, then generateReport
 (async () => {
     if (siteMapUrl) {
         await generateLighthouseReports(siteMapUrl)
+        await generateReport()
     }
-    await generateReport()
+    
 })();
