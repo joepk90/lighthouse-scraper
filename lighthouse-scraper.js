@@ -18,7 +18,7 @@ const scraper = async (sitemapUrls) => {
 
 (async () => {
 
-    const scrapedUrls = await scraper(["https://www.example.com/sitemap.xml"])
+    const scrapedUrls = await scraper(["https://www.wildflowerbelt.com/sitemap.xml"])
 
     const urls = [scrapedUrls[0], scrapedUrls[1]];
 
