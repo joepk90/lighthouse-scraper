@@ -42,27 +42,27 @@ const extractResourceSummaries = (file) => {
     }
 
     if (!('audits' in data)) {
-        throw('audits propery not fount in JSON file!');
+        console.log('audits propery not fount in JSON file!');
         return;
     }
     const auditsObject = data.audits;    
 
     if (!('resource-summary' in auditsObject)) {
-        throw 'resource-summary propery not fount in JSON file!';
+        console.log('resource-summary propery not fount in JSON file!');
         return;
     }
     const resourceSummary = auditsObject['resource-summary' ]
 
 
     if (!('details' in resourceSummary)) {
-        throw 'details propery not fount in JSON file!';
+        console.log('details propery not fount in JSON file!');
         return;
     }
     const resourceSummaryDetails = resourceSummary['details']
 
 
     if (!('items' in resourceSummaryDetails)) {
-        throw 'details propery not fount in JSON file!';
+        console.log('items propery not fount in JSON file!');
         return;
     }
 
@@ -79,14 +79,14 @@ const restructureData = (data) => {
     let restructuredData = {};
 
     if (!('requestedUrl' in data)) {
-        throw 'requestedUrl property not fount in JSON data!';
+        console.log('requestedUrl property not fount in JSON data!');
         return;
     }
 
     restructuredData.url = data.requestedUrl
 
     if (!('resources' in data)) {
-        throw 'resources property not fount in JSON data!';
+        console.log('resources property not fount in JSON data!');
         return;
     }
 
@@ -94,7 +94,7 @@ const restructureData = (data) => {
     data.resources.forEach(resourceType => {
         
         if (!('label' in resourceType) || !('transferSize' in resourceType)) {
-            throw 'label or transferSize property not fount in JSON data!';
+            console.log('label or transferSize property not fount in JSON data!');
             return;
         }
 
