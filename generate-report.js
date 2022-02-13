@@ -37,9 +37,11 @@ const extractResourceSummaries = (file) => {
     data = getFirstPropertyOfObject(file);
 
     // get requested url property and assign it to the new required data object
-    if (('requestedUrl' in data)) {
-        requiredData.requestedUrl = data.requestedUrl
+    if (!("requestedUrl" in data)) {
+        console.log("requestedUrl propery not fount in JSON file!");
+        return;
     }
+    requiredData.requestedUrl = data.requestedUrl;
 
     if (!('audits' in data)) {
         console.log('audits propery not fount in JSON file!');
@@ -77,6 +79,11 @@ const extractResourceSummaries = (file) => {
 const restructureData = (data) => {
 
     let restructuredData = {};
+
+    if (!data) {
+        console.log("data empty!");
+        return;
+    }
 
     if (!('requestedUrl' in data)) {
         console.log('requestedUrl property not fount in JSON data!');
