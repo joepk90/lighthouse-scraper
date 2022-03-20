@@ -12,6 +12,7 @@
   "devDependencies": {
     "json2csv": "^5.0.6",
     "lighthouse": "^9.2.0",
+    "psi": "^4.1.0",
     "xml-sitemap-url-scraper": "^1.1.0"
   }
 }
